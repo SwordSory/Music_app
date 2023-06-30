@@ -1,4 +1,4 @@
-# Musci_app
+# Music_app
 App that allows you to play music.
 
 
