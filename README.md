@@ -14,4 +14,4 @@ You can also create a exe file with pyinstaller:- pyinstaller --onefile --window
 Also you can download music from youtube by replacing youtube.com in youtube url with youtubepp.com and selecting audio [FOR NOW] until I add download feature in the app.
 
 Also dont mind the UI it is still a work in progress.
-I will post updated version after completing it.
+I will post updated version after updating it.
