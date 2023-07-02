@@ -52,10 +52,12 @@ stoprect = pygame.Rect(570 , 725, 120, 120)
 
 
 vol_plus = pygame.Rect(500, 700, 50, 50)
-plus = pmfont.render("+", True, "Black")
+vp = pygame.Rect(500, 700, 50, 50)
+plus = pmfont.render("+", True, "White")
 
 vol_minus = pygame.Rect(500, 825, 50, 50)
-minus = pmfont.render("–", True, "Black")
+vm = pygame.Rect(500, 825, 50, 50)
+minus = pmfont.render("–", True, "White")
 
 
 active_song = "NONE"
@@ -179,9 +181,12 @@ while running:
     pygame.draw.line(screen, "Black", (485, 700), (485, 875), 10)
     pygame.draw.line(screen, "Red", (485, vol_height), (485, 875), 10)
     pygame.draw.circle(screen, "Red" , (486.9, vol_height), 8, 100)
-    pygame.draw.rect(screen, "Black", vol_plus, 5)
+    pygame.draw.circle(screen, (255, 105, 97) , (486.9, vol_height), 8, 2)
+    pygame.draw.rect(screen, "Black", vol_plus, 100)
+    pygame.draw.rect(screen, "Blue", vp, 5)
     screen.blit(plus, (508, 694))
-    pygame.draw.rect(screen, "Black", vol_minus, 5)
+    pygame.draw.rect(screen, "Black", vol_minus, 100)
+    pygame.draw.rect(screen, "Blue", vm, 5)
     screen.blit(minus, (509, 819))
     pygame.draw.rect(screen, "Black", what_playing_rect, 100)
     pygame.draw.rect(screen, "Blue", wp_border, 10)
