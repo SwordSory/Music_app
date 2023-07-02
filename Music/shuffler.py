@@ -86,7 +86,9 @@ def mp3_player(random_file):
     pygame.mixer.music.play()
 
     if pygame.mixer.music.get_busy() or paused == True:
-            active_song = (os.path.basename(random_file))
+            active_songg = (os.path.basename(random_file))
+            namee, extensionn = os.path.splitext(active_songg)
+            active_song = namee
 
     p_b_clicked = True
     
