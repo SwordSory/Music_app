@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 import os
 import random
+from mutagen.mp3 import MP3
 
 
 pygame.init()
@@ -11,8 +12,9 @@ pygame.display.set_caption("Shuffler")
 pmfont = pygame.font.Font(None, 80)
 font = pygame.font.Font(None, 60)
 clock = pygame.time.Clock()
+rect_surface = pygame.surface
 
-volume = 0.8
+volume = 0.4
 
 
 
@@ -59,12 +61,20 @@ vol_minus = pygame.Rect(500, 825, 50, 50)
 vm = pygame.Rect(500, 825, 50, 50)
 minus = pmfont.render("–", True, "White")
 
+line_rect = pygame.Rect(478, 696, 14, 183)
+
 
 active_song = "NONE"
 Playing_text = "PLAYING:- "
-what_playing_rect = pygame.Rect(0, 580, 700, 70)
-wp_border = pygame.Rect(0, 580, 700, 70)
+what_playing_rect = pygame.Rect(0, 530, 700, 120)
+wp_border = pygame.Rect(0, 530, 700, 120)
 pt_render = font.render(Playing_text, True, (255, 215, 0))
+sdrect = pygame.Rect(27, 557, 646, 16)
+
+flr = pygame.image.load(assects_pather("filler.png"))
+filler = pygame.transform.scale(flr, (430, 430))
+filler_bg = pygame.Rect(110, 25, 480, 480)
+fillerbg_brdr = pygame.Rect(110, 25, 480, 480)
 
 
 p_b_clicked = False
@@ -76,11 +86,15 @@ play = False
 loop_count = 0
 pause_count = 0
 songs_folder = os.path.join(os.path.dirname(os.path.realpath(__file__)), ("Songs"))
+song_length = 0
+sp = 0
+
 
 
 
 def mp3_player(random_file):
     global active_song
+    global song_length
     pygame.mixer.init()
     pygame.mixer.music.load(random_file)
     pygame.mixer.music.play()
@@ -89,6 +103,8 @@ def mp3_player(random_file):
             active_songg = (os.path.basename(random_file))
             namee, extensionn = os.path.splitext(active_songg)
             active_song = namee
+            song = MP3(random_file)
+            song_length = song.info.length
 
     p_b_clicked = True
     
@@ -157,14 +173,40 @@ while running:
 
                 elif vol_plus.collidepoint(pos) and event.button == 1:
                     if volume < 1:
-                        volume += 0.025
+                        volume += 0.01
 
                 elif vol_minus.collidepoint(pos) and event.button == 1:
                     if volume > 0:
-                        volume -= 0.025
+                        volume -= 0.01
+                elif line_rect.collidepoint(pos) and event.button == 1:
+                    x, y = pygame.mouse.get_pos()
+                    if y >= 700 and y <= 875:
+                        volume = (875-y)/175
+                    elif y < 700 and y > 695:
+                        volume = 1
+                    elif y > 875 and y < 880:
+                        volume = 0
+                elif sdrect.collidepoint(pos) and event.button == 1:
+                    tx, ty = pygame.mouse.get_pos()
+                    if tx >= 30 and tx <= 670:
+                        sp = (((tx - 30) / 640) * song_length)
+                    elif tx < 30:
+                        sp = 0
+                    elif tx > 670:
+                        sp = song_length
+                    pygame.mixer.music.set_pos(sp)
     except:
         pass
-
+    
+    paused = True
+    current_position = pygame.mixer.music.get_pos()
+    if current_position != 0 and song_length != 0:
+        bar_width = int((current_position / (song_length * 1000)) * 640)
+    else:
+        bar_width = 0
+        
+    paused = False
+    sd = bar_width + 30
 
     if not os.path.exists(songs_folder):
         os.mkdir(songs_folder)
@@ -191,9 +233,16 @@ while running:
     pygame.draw.rect(screen, "Blue", vm, 5)
     screen.blit(minus, (509, 819))
     pygame.draw.rect(screen, "Black", what_playing_rect, 100)
+    screen.blit(what_playing, (230, 600))
     pygame.draw.rect(screen, "Blue", wp_border, 10)
     screen.blit(pt_render, (15, 600))
-    screen.blit(what_playing, (230, 600))
+    pygame.draw.line(screen, "Gray", (30, 565), (670, 565), 10)
+    pygame.draw.line(screen, "Green", (30, 565), (sd, 565), 10)
+    pygame.draw.circle(screen, "Green" , (sd, 565), 8, 100)
+    pygame.draw.circle(screen, (199, 227, 180) , (sd, 565), 8, 2)
+    pygame.draw.rect(screen, "Gray", filler_bg, 1000)
+    pygame.draw.rect(screen, (255, 255, 0), fillerbg_brdr, 10)
+    screen.blit(filler, (135, 50))
     
 
 
