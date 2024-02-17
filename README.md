@@ -1,6 +1,8 @@
 # Music_app (First Update)
 App that allows you to play music.
 
+"pip install -r requirements.txt" to install the dependencies
+
 
 It is still a work in progress.
 I plan to make it possible to download music from the app.
