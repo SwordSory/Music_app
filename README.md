@@ -2,6 +2,7 @@
 App that allows you to play music.
 
 "pip install -r requirements.txt" to install the dependencies
+
 ALSO USE VENV
 
 
